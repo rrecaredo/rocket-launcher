@@ -1,0 +1,20 @@
+module.exports = {
+  rootDir: "./src",
+  preset: "ts-jest",
+  testEnvironment: "jest-environment-jsdom",
+  coverageDirectory: "coverage",
+  coverageProvider: "v8",
+  resetMocks: true,
+  setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
+  collectCoverageFrom: ["<rootDir>/**/*.{ts,tsx}", "!src/**/*.d.ts"],
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  moduleDirectories: ["node_modules", "./src"],
+  moduleNameMapper: {
+    "\\.(css)$": "identity-obj-proxy",
+    "^@common$": "<rootDir>/lib/common/index.ts",
+    "^@components/(.*)$": "<rootDir>/lib/component/$1",
+    "^@hooks/(.*)$": "<rootDir>/lib/hooks/$1",
+  },
+  testMatch: ["<rootDir>/**/*.{spec,test}.{ts,tsx}"],
+  verbose: true,
+};
