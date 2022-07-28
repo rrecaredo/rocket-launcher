@@ -32,7 +32,6 @@ export const StyledButton = styled.button<ButtonProps>`
   color: ${getColor};
   border-radius: 0;
   font-weight: 400;
-  font-family: ${(props) => props.theme.font.family.default};
   font-size: ${(props) => props.theme.font.size.md};
   line-height: 14px;
   min-width: 130px;

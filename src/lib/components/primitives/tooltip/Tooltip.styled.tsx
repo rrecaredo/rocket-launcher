@@ -15,7 +15,6 @@ export const StyledTooltip = styled.div<Props>`
   font-weight: 500;
   min-width: 110px;
   text-align: center;
-  font-family: ${(props) => props.theme.font.family.default};
   font-size: ${(props) => props.theme.font.size.md};
 `;
 

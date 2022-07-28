@@ -6,9 +6,6 @@ export const theme = {
     background: "#fff",
   },
   font: {
-    family: {
-      default: "'Roboto', 'sans-serif'",
-    },
     size: {
       md: "12px",
     },
