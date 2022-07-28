@@ -1,3 +1,5 @@
+![example workflow](https://github.com/rrecaredo/rocket-launcher/actions/workflows/main.yml/badge.svg)
+
 # Space rocket launcher 🚀
 
 You have been tasked with building a re-usable button for a mission control dashboard.
