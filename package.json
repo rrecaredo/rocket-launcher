@@ -16,6 +16,7 @@
     "@floating-ui/react-dom": "^1.0.0",
     "@floating-ui/react-dom-interactions": "^0.8.0",
     "@tanstack/react-query": "^4.0.10",
+    "@testing-library/react-hooks": "^8.0.1",
     "jest-fetch-mock": "^3.0.3",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",

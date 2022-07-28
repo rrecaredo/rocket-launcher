@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { enableFetchMocks, FetchMock } from "jest-fetch-mock";
 import { useCancellableFetch } from "./useCancellableFetch";
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react-hooks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 enableFetchMocks();
@@ -40,25 +40,32 @@ describe("Hooks > useCancellableFetch", () => {
   test("It fetches data from the provided URL", async () => {
     (fetch as FetchMock).mockResponseOnce(JSON.stringify({ data: "test" }));
 
-    const { result } = renderHook(
+    const { result, waitForNextUpdate } = renderHook(
       () => useCancellableFetch({ queryKey: "test", url: "test" }),
       { wrapper }
     );
 
-    await act(async () => {
-      await result.current.request();
+    await act( () => {
+      result.current.request();
     });
+
+    /*
+    This test is flaky, sometimes it fails with a timeout error. Need to figure out why.
+    await waitForNextUpdate();
+    */
 
     expect(fetch).toHaveBeenCalledWith("test", expect.anything());
 
     expect(result.current).toMatchInlineSnapshot(`
       Object {
         "abort": [Function],
-        "data": undefined,
+        "data": Object {
+          "data": "test",
+        },
         "error": null,
         "isAborted": false,
         "isError": false,
-        "isFetched": false,
+        "isFetched": true,
         "isFetching": false,
         "request": [Function],
       }
@@ -73,7 +80,7 @@ describe("Hooks > useCancellableFetch", () => {
         )
     );
 
-    const { result } = renderHook(
+    const { result, waitForNextUpdate } = renderHook(
       () => useCancellableFetch({ queryKey: "fail", url: "test" }),
       { wrapper }
     );
