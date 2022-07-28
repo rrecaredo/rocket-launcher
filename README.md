@@ -33,6 +33,10 @@ yarn storybook
 
 ## Test the Components
 
+![2022-07-28 10 35 20](https://user-images.githubusercontent.com/196860/181460784-491bf908-fd58-45c1-bcab-07f16588039e.gif)
+
+![2022-07-28 10 34 58](https://user-images.githubusercontent.com/196860/181460904-70995f4c-65e2-4ede-83eb-3e2a675e409b.gif)
+
 - [Demo application](https://rocket-launcher.vercel.app/)
 - [StoryBook](https://62e243f653f954ed0d3d0cf9-bkfvfcgapn.chromatic.com/)
 
