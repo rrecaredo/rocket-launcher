@@ -1,8 +1,9 @@
 {
-  "name": "wayflyer",
+  "name": "rocket-launcher",
   "private": true,
   "version": "0.0.1",
   "author": "Ricardo Recaredo",
+  "homepage": "https://rrecaredo.github.io/rocket-launcher",
   "scripts": {
     "start": "vite --open",
     "build": "tsc && vite build",
