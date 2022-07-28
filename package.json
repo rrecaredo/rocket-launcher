@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "author": "Ricardo Recaredo",
   "scripts": {
-    "dev": "vite",
+    "start": "vite --open",
     "build": "tsc && vite build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
