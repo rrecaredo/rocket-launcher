@@ -31,6 +31,11 @@ yarn build-storybook
 yarn storybook
 ```
 
+## Test the Components
+
+- [Demo application](https://rocket-launcher.vercel.app/)
+- [StoryBook](https://62e243f653f954ed0d3d0cf9-bkfvfcgapn.chromatic.com/)
+
 ## Design
 
 ### Structure decomposition
