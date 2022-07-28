@@ -96,3 +96,11 @@ the same set of transition rules.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 
 ## Possible improvements
+
+- Add unit tests to all components
+- Improve the design system and create a design language using tokens.
+- Enhance useCancellabeFetch. HTTP Service could be defined in a global scope and injected into the hook (either via ContextProvider or some form of Service Locator pattern). This way we would have more granular control over HTTP headers, authentication, params/body validation, logging, etc.
+- Add Integration tests for components [Cypress component tests](https://docs.cypress.io/guides/component-testing/testing-react)
+- Add Visual regression tests
+- Fix issues with Tooltip Top placement and potentially remove dependency with Floating-UI. Write custom logic with `getBoundingClientRect()`.
+- Move Common elements to a separate UI library or make the system a monorepo.
