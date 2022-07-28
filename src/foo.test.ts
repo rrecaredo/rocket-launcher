@@ -1,7 +1,7 @@
 import App from "./App";
 
 describe("Jest setup", () => {
-  test("it should work 2", () => {
+  test("it should work", () => {
     expect(true).toBe(true);
   });
 });
