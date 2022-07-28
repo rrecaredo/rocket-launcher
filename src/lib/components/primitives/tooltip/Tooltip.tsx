@@ -1,5 +1,5 @@
-import React, { ReactElement, useState, useMemo, useRef } from "react";
-import { mergeRefs } from "react-merge-refs";
+import { ReactElement, useState, useMemo, useRef, Children, cloneElement } from "react";
+import { mergeRefs } from "../../../utils/MergeRefs";
 
 import {
   useFloating,
@@ -65,8 +65,8 @@ export function Tooltip({
     useRole(context, { role: "tooltip" }),
   ]);
 
-  const contextElement = React.Children.only(
-    React.cloneElement(children, getReferenceProps({ ref, ...children.props }))
+  const contextElement = Children.only(
+    cloneElement(children, getReferenceProps({ ref, ...children.props }))
   );
 
   const arrowPositioningStyles = useMemo(() => {

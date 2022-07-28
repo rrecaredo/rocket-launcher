@@ -41,7 +41,9 @@ export const useCancellableFetch = ({
   const { refetch, data, error, isError, isFetched, isFetching } = useQuery(
     [queryKey],
     async ({ signal }) => {
-      const abortTimeout = setTimeout(() => abort(), timeout);
+      const abortTimeout = setTimeout(() => {
+        abort()
+      }, timeout);
 
       try {
         const response = await fetch(url, {

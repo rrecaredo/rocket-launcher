@@ -1,6 +1,6 @@
 import { useCancellableFetch } from "./useCancellableFetch";
 
-describe("Hooks > useCancellableFetch", () => {
+describe.skip("Hooks > useCancellableFetch", () => {
   test("It returns initial state when mounted", () => {
     throw new Error("Not implemented");
   });

@@ -41,7 +41,11 @@ export const SmartButton = ({
         onClick={(e) => onClick && onClick(e)}
         disabled={state === "disabled"}
         variant={variant as StyleVariant}
-        decorator={state === "working" ? <Spinner /> : undefined}
+        decorator={
+          state === "working" ? (
+            <Spinner aria-valuetext="Loading" aria-busy="true" />
+          ) : undefined
+        }
       >
         {label}
       </Button>

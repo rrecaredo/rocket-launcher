@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ComponentPropsWithoutRef, forwardRef, ReactElement, Ref } from "react";
 import styled, { ThemedStyledProps } from "styled-components";
 import { theme, StyleVariant } from "@common";
 
@@ -60,7 +60,7 @@ export const StyledButton = styled.button<ButtonProps>`
   }
 `;
 
-export const Button = React.forwardRef(
+export const Button = forwardRef(
   (
     {
       variant,
@@ -68,8 +68,8 @@ export const Button = React.forwardRef(
       decorator,
       children,
       ...rest
-    }: React.ComponentPropsWithoutRef<"button"> & ButtonProps,
-    ref: React.Ref<HTMLButtonElement>
+    }: ComponentPropsWithoutRef<"button"> & ButtonProps,
+    ref: Ref<HTMLButtonElement>
   ) => {
     return (
       <StyledButton
