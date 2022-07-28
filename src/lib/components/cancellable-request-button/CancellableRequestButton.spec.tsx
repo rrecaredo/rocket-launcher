@@ -1,6 +1,9 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "styled-components";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
+import "whatwg-fetch";
 
 import {
   cleanup,
@@ -14,7 +17,35 @@ import userEvent from "@testing-library/user-event";
 
 import { CancellableRequestButton } from "./CancellableRequestButton";
 import { theme } from "@common/theme";
-import {ButtonState} from '@components/smart-button';
+import { ButtonState } from '@components/smart-button';
+
+global.ResizeObserver = require('resize-observer-polyfill')
+
+const worker = setupServer(
+    rest.get("/api/rocket-launcher", (req, res, ctx) => {
+      return res(
+          ctx.json({
+            count: 500,
+            firstName: "Foo",
+            lastName: "Bar",
+          })
+      );
+    }),
+    rest.post("/api/timeout", (req, res, ctx) => {
+      return res(
+          ctx.delay(2000),
+          ctx.json({
+            count: 500,
+            firstName: "Foo",
+            lastName: "Bar",
+          })
+      );
+    })
+);
+
+beforeAll(() => worker.listen());
+afterEach(() => worker.resetHandlers());
+afterAll(() => worker.close());
 
 export const STRINGS = {
   LaunchRocketLabel: "Launch Rocket",
