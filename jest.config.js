@@ -11,8 +11,8 @@ module.exports = {
   moduleDirectories: ["node_modules", "./src"],
   moduleNameMapper: {
     "\\.(css)$": "identity-obj-proxy",
-    "^@common$": "<rootDir>/lib/common/index.ts",
-    "^@components/(.*)$": "<rootDir>/lib/component/$1",
+    "^@common/(.*)$": "<rootDir>/lib/common/$1",
+    "^@components/(.*)$": "<rootDir>/lib/components/$1",
     "^@hooks/(.*)$": "<rootDir>/lib/hooks/$1",
   },
   testMatch: ["<rootDir>/**/*.{spec,test}.{ts,tsx}"],
