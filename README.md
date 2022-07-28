@@ -66,7 +66,7 @@ Primitives are basic building blocks that can be used to compose more complex co
 
 Encapsulates the presentation logic for state transitions. It represents the glue between a normal Button, a Tooltip and their relation. It can be used for use cases where the main operation is not necessarily a Fetch request.
 
-## CancellableRequestButton
+### CancellableRequestButton
 
 It is an abstraction on top of `<SmartButton>` that incorporates HTTP fetching management. It is designed to be used in scenarios similar to Rocket
 Launching, where we want the user to be able to initiate a request to an HTTP endpoint and apply
