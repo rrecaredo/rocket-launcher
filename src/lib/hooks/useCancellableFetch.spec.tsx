@@ -38,21 +38,20 @@ describe("Hooks > useCancellableFetch", () => {
   });
 
   test("It fetches data from the provided URL", async () => {
-    (fetch as FetchMock).mockResponseOnce(JSON.stringify({ data: "test" }));
+    (fetch as FetchMock).mockResponseOnce(() =>
+      Promise.resolve(JSON.stringify({ data: "test" }))
+    );
 
     const { result, waitForNextUpdate } = renderHook(
       () => useCancellableFetch({ queryKey: "test", url: "test" }),
       { wrapper }
     );
 
-    await act( () => {
+    act(() => {
       result.current.request();
     });
 
-    /*
-    This test is flaky, sometimes it fails with a timeout error. Need to figure out why.
     await waitForNextUpdate();
-    */
 
     expect(fetch).toHaveBeenCalledWith("test", expect.anything());
 
