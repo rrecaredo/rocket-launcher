@@ -12,16 +12,25 @@ const wrapper: FC<{ children: ReactNode }> = ({ children }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
+const getResponsePromise = (delay = 0): Promise<string> => new Promise((resolve) =>
+    setTimeout(() => resolve(JSON.stringify({ data: "test" })), delay)
+);
+
+const renderUseCancellableFetch = () => {
+  return renderHook(
+      () => useCancellableFetch({ queryKey: "", url: "http://fakeurl/api" }),
+      { wrapper }
+  );
+};
+
 describe("Hooks > useCancellableFetch", () => {
   beforeEach(() => (fetch as FetchMock).resetMocks());
 
   test("It returns initial state when mounted", async () => {
-    (fetch as FetchMock).mockResponseOnce(JSON.stringify({ data: "test" }));
+    const response = getResponsePromise();
+    (fetch as FetchMock).mockResponseOnce(() => response);
 
-    const { result } = renderHook(
-      () => useCancellableFetch({ queryKey: "test", url: "test" }),
-      { wrapper }
-    );
+    const { result } = renderUseCancellableFetch();
 
     expect(result.current).toMatchInlineSnapshot(`
       Object {
@@ -35,12 +44,13 @@ describe("Hooks > useCancellableFetch", () => {
         "request": [Function],
       }
     `);
+
+    await act(() => response as any);
   });
 
   test("It fetches data from the provided URL", async () => {
-    (fetch as FetchMock).mockResponseOnce(() =>
-      Promise.resolve(JSON.stringify({ data: "test" }))
-    );
+    const response = getResponsePromise();
+    (fetch as FetchMock).mockResponseOnce(() => response);
 
     const { result, waitForNextUpdate } = renderHook(
       () => useCancellableFetch({ queryKey: "test", url: "test" }),
@@ -54,7 +64,6 @@ describe("Hooks > useCancellableFetch", () => {
     await waitForNextUpdate();
 
     expect(fetch).toHaveBeenCalledWith("test", expect.anything());
-
     expect(result.current).toMatchInlineSnapshot(`
       Object {
         "abort": [Function],
@@ -69,50 +78,41 @@ describe("Hooks > useCancellableFetch", () => {
         "request": [Function],
       }
     `);
+
+    await act(() => response as any);
   });
 
   test("The request can be aborted", async () => {
-    (fetch as FetchMock).mockResponseOnce(
-      () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ body: "ok" }), 1000)
-        )
-    );
+    const response = getResponsePromise(1000);
+    (fetch as FetchMock).mockResponseOnce(() => response);
 
-    const { result, waitForNextUpdate } = renderHook(
-      () => useCancellableFetch({ queryKey: "fail", url: "test" }),
-      { wrapper }
-    );
+    const { result, waitForNextUpdate } = renderUseCancellableFetch();
 
-    await act(() => {
+    act(() => {
       result.current.request();
     });
 
-    await act(() => {
+    act(() => {
       result.current.abort();
     });
 
+    await waitForNextUpdate();
+
     expect(result.current.isAborted).toBeTruthy();
     expect(result.current.data).not.toBeDefined();
+
+    await act(() => response as any);
   });
 
   test("It timeouts if the request is not fulfilled in less time than defined by the timeout prop", async () => {
+    const response = getResponsePromise();
+    (fetch as FetchMock).mockResponseOnce(() => response);
+
     jest.useFakeTimers();
 
-    (fetch as FetchMock).mockResponseOnce(
-      () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ body: "ok" }), 1000)
-        )
-    );
+    const { result } = renderUseCancellableFetch();
 
-    const { result } = renderHook(
-      () =>
-        useCancellableFetch({ queryKey: "fail", url: "test", timeout: 100 }),
-      { wrapper }
-    );
-
-    await act(() => {
+    act(() => {
       result.current.request();
     });
 
@@ -132,5 +132,7 @@ describe("Hooks > useCancellableFetch", () => {
     `);
 
     jest.useRealTimers();
+
+    await act(() => response as any);
   });
 });

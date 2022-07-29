@@ -17,35 +17,35 @@ import userEvent from "@testing-library/user-event";
 
 import { CancellableRequestButton } from "./CancellableRequestButton";
 import { theme } from "@common/theme";
-import { ButtonState } from '@components/smart-button';
+import { ButtonState } from "@components/smart-button";
 
-global.ResizeObserver = require('resize-observer-polyfill')
+global.ResizeObserver = require("resize-observer-polyfill");
 
-const worker = setupServer(
-    rest.get("/api/rocket-launcher", (req, res, ctx) => {
-      return res(
-          ctx.json({
-            count: 500,
-            firstName: "Foo",
-            lastName: "Bar",
-          })
-      );
-    }),
-    rest.post("/api/timeout", (req, res, ctx) => {
-      return res(
-          ctx.delay(2000),
-          ctx.json({
-            count: 500,
-            firstName: "Foo",
-            lastName: "Bar",
-          })
-      );
-    })
+const server = setupServer(
+  rest.get("/api/rocket-launcher", (req, res, ctx) => {
+    return res(
+      ctx.json({
+        count: 500,
+        firstName: "Foo",
+        lastName: "Bar",
+      })
+    );
+  }),
+  rest.get("/api/timeout", (req, res, ctx) => {
+    return res(
+      ctx.delay(2000),
+      ctx.json({
+        count: 500,
+        firstName: "Foo",
+        lastName: "Bar",
+      })
+    );
+  })
 );
 
-beforeAll(() => worker.listen());
-afterEach(() => worker.resetHandlers());
-afterAll(() => worker.close());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 export const STRINGS = {
   LaunchRocketLabel: "Launch Rocket",
@@ -76,20 +76,20 @@ const onSuccess = jest.fn();
 
 const renderButton = (state: ButtonState, url: string) => {
   render(
-      <CancellableRequestButton
-          url={url}
-          state={state}
-          onSuccess={onSuccess}
-          {...labelProps}
-      />,
-      {
-        wrapper,
-      }
+    <CancellableRequestButton
+      url={url}
+      state={state}
+      onSuccess={onSuccess}
+      {...labelProps}
+    />,
+    {
+      wrapper,
+    }
   );
 };
 
 const fastApiUrl = "/api/rocket-launcher";
-const slowApiUrl = "/api/timeout";
+const slowApiUrl = "http://localhost/api/timeout";
 
 describe("Components > CancellableRequestButton", () => {
   afterAll(cleanup);
@@ -97,7 +97,7 @@ describe("Components > CancellableRequestButton", () => {
   beforeEach(jest.resetAllMocks);
 
   test("It should make a network request to a URL passed as props", async () => {
-    renderButton("ready", fastApiUrl)
+    renderButton("ready", fastApiUrl);
 
     fireEvent.click(screen.getByRole("button"));
 
@@ -105,7 +105,7 @@ describe("Components > CancellableRequestButton", () => {
   });
 
   test("It should show the 'Working' state for the duration of the network request", async () => {
-    renderButton("ready", slowApiUrl)
+    renderButton("ready", slowApiUrl);
 
     fireEvent.click(screen.getByRole("button"));
 
@@ -118,7 +118,7 @@ describe("Components > CancellableRequestButton", () => {
     jest.useFakeTimers();
     const onSuccess = jest.fn();
 
-    renderButton("ready", slowApiUrl)
+    renderButton("ready", slowApiUrl);
 
     fireEvent.click(screen.getByRole("button"));
 
@@ -128,14 +128,18 @@ describe("Components > CancellableRequestButton", () => {
 
     jest.useRealTimers();
 
-    // @TODO: There is an async operation happening after the component unmounts, likely coming from React Query
-    // which is causing a warning and potentially a memory leak that needs further investigation.
+    await waitFor(() => expect(onSuccess).not.toHaveBeenCalled());
+
+    /* @TODO: There is an async operation causing an update to CancellableRequestButton
+              after the component unmounts, likely coming from React Query
+              which is causing a warning and potentially a memory leak that needs further investigation.
+     */
   });
 
   test("It should show the error state after the max duration is exceeded and the network request is cancelled", async () => {
     jest.useFakeTimers();
 
-    renderButton("ready", slowApiUrl)
+    renderButton("ready", slowApiUrl);
 
     fireEvent.click(screen.getByRole("button"));
 
@@ -149,7 +153,7 @@ describe("Components > CancellableRequestButton", () => {
   });
 
   test("It should return to the default state after the network request completes", async () => {
-    renderButton("ready", fastApiUrl)
+    renderButton("ready", fastApiUrl);
 
     fireEvent.click(screen.getByRole("button"));
 
@@ -164,7 +168,7 @@ describe("Components > CancellableRequestButton", () => {
   test("A second click of the button should abort a request that is in-flight and show the error state", async () => {
     jest.useFakeTimers();
 
-    renderButton("ready", slowApiUrl)
+    renderButton("ready", slowApiUrl);
 
     const button = screen.getByRole("button");
 
@@ -184,28 +188,27 @@ describe("Components > CancellableRequestButton", () => {
 
   describe("It should be possible to put the button into each state via props", () => {
     test("ready", async () => {
-      renderButton("ready", slowApiUrl)
+      renderButton("ready", slowApiUrl);
 
-      expect(screen.queryByText(/Launch Rocket/)).toBeInTheDocument()
+      expect(screen.queryByText(/Launch Rocket/)).toBeInTheDocument();
       expect(screen.queryByText(/Ignites the fuel/)).toBeNull();
     });
 
     test("working", async () => {
       renderButton("working", slowApiUrl);
 
-      expect(screen.queryByText(/Launching/)).toBeInTheDocument()
+      expect(screen.queryByText(/Launching/)).toBeInTheDocument();
     });
 
     test("errored", async () => {
       renderButton("error", slowApiUrl);
 
-      expect(screen.queryByText(/Ignition error/)).toBeInTheDocument()
+      expect(screen.queryByText(/Ignition error/)).toBeInTheDocument();
     });
 
     test("disabled", async () => {
       renderButton("disabled", slowApiUrl);
       expect(screen.getByRole("button")).toBeDisabled();
-
     });
   });
 
