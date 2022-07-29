@@ -12,14 +12,15 @@ const wrapper: FC<{ children: ReactNode }> = ({ children }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-const getResponsePromise = (delay = 0): Promise<string> => new Promise((resolve) =>
+const getResponsePromise = (delay = 0): Promise<string> =>
+  new Promise((resolve) =>
     setTimeout(() => resolve(JSON.stringify({ data: "test" })), delay)
-);
+  );
 
 const renderUseCancellableFetch = () => {
   return renderHook(
-      () => useCancellableFetch({ queryKey: "", url: "http://fakeurl/api" }),
-      { wrapper }
+    () => useCancellableFetch({ queryKey: "", url: "http://fakeurl/api" }),
+    { wrapper }
   );
 };
 

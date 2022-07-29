@@ -89,7 +89,7 @@ const renderButton = (state: ButtonState, url: string) => {
 };
 
 const fastApiUrl = "/api/rocket-launcher";
-const slowApiUrl = "http://localhost/api/timeout";
+const slowApiUrl = "/api/timeout";
 
 describe("Components > CancellableRequestButton", () => {
   afterAll(cleanup);
