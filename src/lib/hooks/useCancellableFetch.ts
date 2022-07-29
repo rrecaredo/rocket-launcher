@@ -42,7 +42,7 @@ export const useCancellableFetch = ({
     [queryKey],
     async ({ signal }) => {
       const abortTimeout = setTimeout(() => {
-        abort()
+        abort();
       }, timeout);
 
       try {
