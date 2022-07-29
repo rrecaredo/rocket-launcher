@@ -110,7 +110,7 @@ export const CancellableRequestButton = ({
 
   const onClickHandler = () => {
     const isReady = currentState === "ready" && !isFetching;
-    const wasRequestAborted = currentState === "error" && !isAborted;
+    const wasRequestAborted = currentState === "error" && isAborted;
 
     if (isReady || wasRequestAborted) {
       makeRequest();

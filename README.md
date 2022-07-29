@@ -85,14 +85,14 @@ the same set of transition rules.
 
 ### **State transitions**
 
-<img width="572" alt="image" src="https://user-images.githubusercontent.com/196860/181434040-acddacd3-7e27-448a-b751-5ec8a409412f.png">
+<img width="572" alt="image" src="https://user-images.githubusercontent.com/63280641/181743461-b5780c22-5141-49f9-a188-1917032468a1.png">
 
 - By default, the button loads in Ready state.
 - From Ready, the launch button can transition to Working when the user press the button, starting the ignition process.
 - If the launch button is again pressed while its working, it will transition to Errored (canceling the ongoing request inmediately)
 - If the request takes too long to complete, the button will transition to Errored.
 - If there is an error with the fetch operation, the button will transition to Errored.
-- It will be possible to transition from Errored back to Ready only if the user has manually aborted the request before so they can retry again.
+- It will be possible to transition from Errored back to Working only if the user has manually aborted the request before so they can retry again.
 
 ## Stack
 
